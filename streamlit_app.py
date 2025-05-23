@@ -38,7 +38,6 @@ if st.button("Predict best dose for minimal cancer cells"):
     pred_cancer = pred_cancer.rename(columns={"prediction_label":"prediction cancer cells"})
     best_cancer = pred_cancer[pred_cancer["prediction cancer cells"] == pred_cancer["prediction cancer cells"].min()]
     pred_tcell = predict_model(model_tcell, data=best_cancer.drop(columns=["prediction cancer cells"]))
-    print(pred_tcell)
     best_cancer["prediction t-cells"] = pred_tcell["prediction_label"]
     st.write(best_cancer[['[Fab\'CD3-MORF2] (nM)','[Fab\'CD19-MORF1] (nM)', '[Fab\'CD20-MORF1] (nM)','[Fab\'CD38-MORF1] (nM)',
                           "prediction cancer cells", "prediction t-cells"]].sort_values(by="prediction t-cells"))
