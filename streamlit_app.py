@@ -24,10 +24,10 @@ if st.button("Predict best dose for minimal cancer cells"):
     model_cancer = load_model('models/xgboost')
     model_tcell= load_model('models/xgboost_tcell')
     test_d = []
-    for w in np.arange(0,15,0.5):
-        for x in np.arange(0,5,0.5):
-            for y in np.arange(0,5,0.5):
-                for z in np.arange(0,5,0.5):
+    for w in [0,1.66, 5, 15]:
+        for x in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
+            for y in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
+                for z in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
                     test_d.append([a,b,c,d,e,f,g,w,x,y,z])
     test_data = pd.DataFrame(test_d,
                         columns=['T Cell-to-Cancer Cell Ratio (#)','Mean T-Cell Count (total # per well)',
