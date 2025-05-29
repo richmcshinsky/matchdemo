@@ -97,7 +97,7 @@ with col2:
     else:
         z_opts = None
 
-if st.button("Predict best dose for minimal cancer cells"):
+if st.button("Predict best dose for minimal cancer cells and best RECOMMENDED dose (cancer cells/t-cell ratio)"):
     test_d = []
     if w_opts and x_opts and y_opts and z_opts:
         for w in w_opts:
@@ -126,25 +126,7 @@ if st.button("Predict best dose for minimal cancer cells"):
     else:
         st.write(best_cancer[['[Fab\'CD3-MORF2] (nM)','[Fab\'CD19-MORF1] (nM)', '[Fab\'CD20-MORF1] (nM)','[Fab\'CD38-MORF1] (nM)',
                             "prediction cancer cells", "prediction t-cells"]].sort_values(by="prediction t-cells"))
-
-
-if st.button("Predict best RECOMMENDED dose (cancer cells/t-cell ratio)"):
-    test_d = []
-    if w_opts and x_opts and y_opts and z_opts:
-        for w in w_opts:
-            for x in x_opts:
-                for y in y_opts:
-                    for z in z_opts:
-                        if x+y+z <= dose_max: # max dose
-                            test_d.append([x for x in [a,b,c,d,e,f,g] if x is not None] + [w,x,y,z])
-        test_data = pd.DataFrame(test_d,columns=columns)
-    elif w_opts and x_opts and y_opts:
-        for w in w_opts:
-            for x in x_opts:
-                for y in y_opts:
-                    if x+y <= dose_max: # max dose
-                        test_d.append([x for x in [a,b,c,d,e,f,g] if x is not None] + [w,x,y])
-        test_data = pd.DataFrame(test_d,columns=columns)
+        
     pred_ratio = predict_model(model_rec, data=test_data)
     pred_ratio = pred_ratio.rename(columns={"prediction_label":"prediction ratio"})
     best_ratio = pred_ratio[pred_ratio["prediction ratio"] == pred_ratio["prediction ratio"].min()]
@@ -159,5 +141,6 @@ if st.button("Predict best RECOMMENDED dose (cancer cells/t-cell ratio)"):
     else:
         st.write(best_ratio[['[Fab\'CD3-MORF2] (nM)','[Fab\'CD19-MORF1] (nM)', '[Fab\'CD20-MORF1] (nM)','[Fab\'CD38-MORF1] (nM)',
                             "prediction cancer", "prediction t-cells", "prediction ratio"]])
+
     # st.pyplot(pred_cancer.plot(x="[Fab\'CD3-MORF2] (nM)", y="prediction cancer cells", kind="scatter").figure)
 
