@@ -36,7 +36,8 @@ if st.button("Predict best dose for minimal cancer cells"):
         for x in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
             for y in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
                 for z in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
-                    test_d.append([a,b,c,d,e,f,g,w,x,y,z])
+                    if x+y+z <= 5: # max does
+                        test_d.append([a,b,c,d,e,f,g,w,x,y,z])
     test_data = pd.DataFrame(test_d,
                         columns=['T Cell-to-Cancer Cell Ratio (#)','Mean T-Cell Count (total # per well)',
         'Mean Cancer-Cell Count (total # per well)', 'CD3 Molecules per T-Cell','CD19 Molecules per Cancer Cell', 
@@ -52,11 +53,11 @@ if st.button("Predict best dose for minimal cancer cells"):
 
     st.pyplot(pred_cancer.plot(x="[Fab\'CD3-MORF2] (nM)", y="prediction cancer cells", kind="scatter").figure)
 
-    test_d = []
-    for w in [0,1.66, 5]:
-        for x in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
-            for y in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
-                for z in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
+    """test_d = []
+    for w in np.arange(0,5,0.1):
+        for x in np.arange(0,5,0.1):
+            for y in np.arange(0,5,0.1):
+                for z in np.arange(0,5,0.1):
                     test_d.append([a,b,c,d,e,f,g,w,x,y,z])
     test_data = pd.DataFrame(test_d,
                         columns=['T Cell-to-Cancer Cell Ratio (#)','Mean T-Cell Count (total # per well)',
@@ -71,4 +72,4 @@ if st.button("Predict best dose for minimal cancer cells"):
     st.write(best_cancer[['[Fab\'CD3-MORF2] (nM)','[Fab\'CD19-MORF1] (nM)', '[Fab\'CD20-MORF1] (nM)','[Fab\'CD38-MORF1] (nM)',
                           "prediction cancer cells", "prediction t-cells"]].sort_values(by="prediction t-cells"))
     
-    
+    st.pyplot(pred_cancer.plot(x="[Fab\'CD3-MORF2] (nM)", y="prediction cancer cells", kind="scatter").figure)"""
