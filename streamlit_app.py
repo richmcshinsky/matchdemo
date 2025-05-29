@@ -20,6 +20,14 @@ with col3:
     c = st.number_input('Mean Cancer-Cell Count (total # per well)')
     f = st.number_input('CD20 Molecules per Cancer Cell')
 
+"""col1, col2 = st.columns(2, gap="small")
+with col1: 
+    d1 = st.number_input('T Cell-to-Cancer Cell Ratio (#)')
+    d2 = st.number_input('CD3 Molecules per T-Cell')
+with col2:
+    d3 = st.number_input('Mean T-Cell Count (total # per well)')
+    d4 = st.number_input('CD19 Molecules per Cancer Cell')"""
+
 if st.button("Predict best dose for minimal cancer cells"):
     model_cancer = load_model('models/xgboost')
     model_tcell= load_model('models/xgboost_tcell')
@@ -42,6 +50,8 @@ if st.button("Predict best dose for minimal cancer cells"):
     st.write(best_cancer[['[Fab\'CD3-MORF2] (nM)','[Fab\'CD19-MORF1] (nM)', '[Fab\'CD20-MORF1] (nM)','[Fab\'CD38-MORF1] (nM)',
                           "prediction cancer cells", "prediction t-cells"]].sort_values(by="prediction t-cells"))
 
+    st.pyplot(pred_cancer.plot(x="[Fab\'CD3-MORF2] (nM)", y="prediction cancer cells", kind="scatter").figure)
+
     test_d = []
     for w in [0,1.66, 5]:
         for x in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
@@ -60,3 +70,5 @@ if st.button("Predict best dose for minimal cancer cells"):
     best_cancer["prediction t-cells"] = pred_tcell["prediction_label"]
     st.write(best_cancer[['[Fab\'CD3-MORF2] (nM)','[Fab\'CD19-MORF1] (nM)', '[Fab\'CD20-MORF1] (nM)','[Fab\'CD38-MORF1] (nM)',
                           "prediction cancer cells", "prediction t-cells"]].sort_values(by="prediction t-cells"))
+    
+    
