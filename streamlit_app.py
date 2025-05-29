@@ -68,7 +68,7 @@ with col1:
 with col2:
     st.write("Grid search dosage options")
     if ('[Fab\'CD19-MORF1] (nM)' in columns) and ('[Fab\'CD20-MORF1] (nM)' in columns) and ('[Fab\'CD38-MORF1] (nM)' in columns):
-        dose_max = st.number_input("Max total dosage for cd19, cd20, and cd38", 5)
+        dose_max = st.number_input("Max total dosage for cd19, cd20, and cd38", 10)
     elif ('[Fab\'CD19-MORF1] (nM)' in columns) and ('[Fab\'CD20-MORF1] (nM)' in columns):
         dose_max = st.number_input("Max total dosage for cd19 and cd20", 5)
     else:
