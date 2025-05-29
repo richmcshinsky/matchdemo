@@ -23,7 +23,9 @@ def load_data(cols):
     #df = df.drop(columns=["Mean Residual T-Cell Count (total # per well)"])
     for col in df.columns:
         df[col] = pd.to_numeric(df[col])
-    df["ratio of cancer to t-cell"] = df["Mean Residual Cancer-Cell Count (total # per well)"]/df["Mean Residual T-Cell Count (total # per well)"]
+    df["Cancer Weighted"] = df["Mean Residual Cancer-Cell Count (total # per well)"] * 10
+    df["ratio of cancer to t-cell"] = df["Cancer Weighted"]/df["Mean Residual T-Cell Count (total # per well)"]
+    df = df.drop(columns=["Cancer Weighted"])
     return df
 
 @st.cache_data
