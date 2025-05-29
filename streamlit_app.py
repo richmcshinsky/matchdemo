@@ -29,9 +29,9 @@ def load_data(cols):
 @st.cache_data
 def train_model(df, target, ignore):
     s = setup(df, target = target, train_size=0.90, session_id = 123,ignore_features=ignore)
-    best = create_model('xgboost')
-    tuned_best = tune_model(best)
-    return tuned_best
+    best = create_model('xgboost', cross_validation = False)
+    #tuned_best = tune_model(best,fold = 3,n_iter=2)
+    return best
 
 columns = st.multiselect("Select input columns for training the model",
     ['T Cell-to-Cancer Cell Ratio (#)','Mean T-Cell Count (total # per well)', 'Mean Cancer-Cell Count (total # per well)', 
