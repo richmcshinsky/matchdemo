@@ -41,3 +41,22 @@ if st.button("Predict best dose for minimal cancer cells"):
     best_cancer["prediction t-cells"] = pred_tcell["prediction_label"]
     st.write(best_cancer[['[Fab\'CD3-MORF2] (nM)','[Fab\'CD19-MORF1] (nM)', '[Fab\'CD20-MORF1] (nM)','[Fab\'CD38-MORF1] (nM)',
                           "prediction cancer cells", "prediction t-cells"]].sort_values(by="prediction t-cells"))
+
+    test_d = []
+    for w in [0,1.66, 5]:
+        for x in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
+            for y in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
+                for z in [0,0.833, 1.66, 2.5, 3.33, 4.16, 5]:
+                    test_d.append([a,b,c,d,e,f,g,w,x,y,z])
+    test_data = pd.DataFrame(test_d,
+                        columns=['T Cell-to-Cancer Cell Ratio (#)','Mean T-Cell Count (total # per well)',
+        'Mean Cancer-Cell Count (total # per well)', 'CD3 Molecules per T-Cell','CD19 Molecules per Cancer Cell', 
+        'CD20 Molecules per Cancer Cell', 'CD38 Molecules per Cancer Cell', '[Fab\'CD3-MORF2] (nM)',
+        '[Fab\'CD19-MORF1] (nM)', '[Fab\'CD20-MORF1] (nM)','[Fab\'CD38-MORF1] (nM)',])
+    pred_cancer = predict_model(model_cancer, data=test_data)
+    pred_cancer = pred_cancer.rename(columns={"prediction_label":"prediction cancer cells"})
+    best_cancer = pred_cancer[pred_cancer["prediction cancer cells"] == pred_cancer["prediction cancer cells"].min()]
+    pred_tcell = predict_model(model_tcell, data=best_cancer.drop(columns=["prediction cancer cells"]))
+    best_cancer["prediction t-cells"] = pred_tcell["prediction_label"]
+    st.write(best_cancer[['[Fab\'CD3-MORF2] (nM)','[Fab\'CD19-MORF1] (nM)', '[Fab\'CD20-MORF1] (nM)','[Fab\'CD38-MORF1] (nM)',
+                          "prediction cancer cells", "prediction t-cells"]].sort_values(by="prediction t-cells"))
