@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 from pycaret.regression import predict_model, load_model, setup, create_model, tune_model
 
-
 st.set_page_config(layout="wide")
 
 st.title("Match Demo")
